@@ -8,10 +8,9 @@
 #
 # processname:	accel-pppd
 # config:	/etc/accel-ppp.conf
-# pidfile:	
+# pidfile:	/var/run/accel-ppp/accel-ppp.pid	
 #
-# $Id: 
-
+#
 # Source function library
 . /etc/rc.d/init.d/functions
 
@@ -28,16 +27,10 @@ else
 	exit 0
 fi
 
-# Set defaults
-OPTION1=""	# Strings
-OPTION2="-q"	#
-OPTION3=	# Values
-OPTION4=5	#
-
 # Get service config - may override defaults
 [ -f /etc/sysconfig/accel-ppp ] && . /etc/sysconfig/accel-ppp
 
-pidfile="/var/run/accel-ppp.pid"
+pidfile="/var/run/accel-ppp/accel-ppp.pid"
 
 start() {
 	# Check if the service is already running?
@@ -47,7 +40,7 @@ start() {
 	fi
 
 	msg_starting "accel-pppd"
-	daemon /usr/sbin/accel-pppd
+	daemon /usr/sbin/accel-pppd $OPTIONS
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/accel-ppp
 }
