@@ -39,43 +39,6 @@ OPTION4=5	#
 
 pidfile="/var/run/accel-ppp.pid"
 
-# configtest itself
-# must return non-zero if check failed
-# output is discarded if checkconfig is ran without details
-configtest() {
-	/usr/sbin/accel-pppd -t
-	return $?
-}
-
-# wrapper for configtest
-checkconfig() {
-	local details=${1:-0}
-
-	if [ $details = 1 ]; then
-		# run config test and display report (status action)
-		show "Checking %s configuration" "accel-ppp"; busy
-		local out
-		out=$(configtest 2>&1)
-		RETVAL=$?
-		if [ $RETVAL = 0 ]; then
-			ok
-		else
-			fail
-		fi
-		[ "$out" ] && echo >&2 "$out"
-	else
-		# run config test and abort with nice message if failed
-		# (for actions checking status before action).
-		configtest >/dev/null 2>&1
-		RETVAL=$?
-		if [ $RETVAL != 0 ]; then
-			show "Checking %s configuration" "accel-ppp"; fail
-			nls 'Configuration test failed. See details with %s "checkconfig"' $0
-			exit $RETVAL
-		fi
-	fi
-}
-
 start() {
 	# Check if the service is already running?
 	if [ -f /var/lock/subsys/accel-ppp ]; then
@@ -83,7 +46,6 @@ start() {
 		return
 	fi
 
-	checkconfig
 	msg_starting "accel-pppd"
 	daemon /usr/sbin/accel-pppd
 	RETVAL=$?
@@ -110,7 +72,6 @@ reload() {
 		return
 	fi
 
-	checkconfig
 	msg_reloading "accel-pppd"
 	killproc accel-pppd -HUP
 	killproc --pidfile $pidfile accel-pppd -HUP
@@ -124,7 +85,6 @@ condrestart() {
 		return
 	fi
 
-	checkconfig
 	stop
 	start
 }
@@ -139,7 +99,6 @@ case "$1" in
 	stop
 	;;
   restart)
-	checkconfig
 	stop
 	start
 	;;
@@ -155,15 +114,12 @@ case "$1" in
   force-reload)
 	condrestart 7
 	;;
-  checkconfig|configtest)
-	checkconfig 1
-	;;
   status)
 	status accel-ppp
 	RETVAL=$?
 	;;
   *)
-	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|checkconfig|status}"
+	msg_usage "$0 {start|stop|restart|try-restart|reload|force-reload|status}"
 	exit 3
 esac
 
