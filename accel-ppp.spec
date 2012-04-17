@@ -15,6 +15,7 @@ URL:		http://sourceforge.net/projects/accel-ppp/
 Source0:	http://downloads.sourceforge.net/accel-ppp/%{name}-%{version}.tar.bz2
 # Source0-md5:	8985ab9f743b952396f6dc53d6fd56a8
 Source1:	%{name}.tmpfiles
+Source2:	%{name}.init
 Patch0:		%{name}-cmake.patch
 BuildRequires:	cmake >= 2.6
 BuildRequires:	libnl1-devel
@@ -63,6 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d} $RPM_BUILD_ROOT%{systemdtmpfilesdir}
 install -d $RPM_BUILD_ROOT/var/{log/accel-ppp,run/accel-ppp}
 install %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/
 echo "0" > $RPM_BUILD_ROOT/var/run/accel-ppp/seq
 
 
@@ -72,9 +74,11 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc COPYING README
-%{_sysconfdir}/accel-ppp.conf.dist
+%dir %{_sysconfdir}
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/accel-ppp.conf.dist
 %attr(755,root,root) %{_sbindir}/accel-pppd
-%{_prefix}/lib/accel-ppp
+%attr(755,root,root) %{_prefix}/lib/accel-ppp
+%attr(754,root,root) /etc/rc.d/init.d/
 %dir /var/run/%{name}
 /var/run/%{name}/seq
 %{systemdtmpfilesdir}/%{name}.conf
