@@ -1,7 +1,6 @@
 #
 # TODO:
 #
-# - change libdir from /usr/lib to %{_libdir}
 # - check accel-ppp.tmpfiles
 # - add bconds
 #
@@ -16,7 +15,9 @@ Source0:	http://downloads.sourceforge.net/accel-ppp/%{name}-%{version}.tar.bz2
 # Source0-md5:	8985ab9f743b952396f6dc53d6fd56a8
 Source1:	%{name}.tmpfiles
 Source2:	%{name}.init
+Source3:	%{name}.logrotate
 Patch0:		%{name}-cmake.patch
+Patch1:		%{name}-cmake-lib64.patch
 BuildRequires:	cmake >= 2.6
 BuildRequires:	libnl1-devel
 BuildRequires:	net-snmp-devel >= 5.0
@@ -44,6 +45,9 @@ Features:
 %prep
 %setup -q
 %patch0 -p1
+%ifarch %{x8664}
+%patch1 -p1
+%endif
 
 %build
 install -d build
@@ -52,7 +56,6 @@ cd build
 	  -DSHAPER=TRUE \
 	  -DRADIUS=TRUE \
 	  -DNETSNMP=TRUE \
-	  -DCMAKE_INSTALL_PREFIX=%{_prefix} \
 	  -DBUILD_INSTALL_PREFIX=$RPM_BUILD_ROOT \
 	  -DLOG_PGSQL=FALSE \
 	  ../
@@ -80,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/accel-ppp.conf.dist
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/%{name}
 %attr(755,root,root) %{_sbindir}/accel-pppd
-%attr(755,root,root) %{_prefix}/lib/accel-ppp
+%attr(755,root,root) %{_libdir}/accel-ppp
 %attr(754,root,root) /etc/rc.d/init.d/accel-pppd
 %dir /var/run/%{name}
 /var/run/%{name}/seq
