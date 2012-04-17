@@ -18,13 +18,13 @@ Source1:	%{name}.tmpfiles
 Patch0:		%{name}-cmake.patch
 BuildRequires:	cmake >= 2.6
 BuildRequires:	libnl1-devel
+BuildRequires:	net-snmp-devel >= 5.0
 BuildRequires:	openssl-devel
 BuildRequires:	pcre-devel
-BuildRequires:	net-snmp-devel >= 5.0
 
 %description
-The ACCEL-PPP is completly new implementation of PPTP/PPPoE/L2TP
-which was written from scratch. Userspace daemon has its own PPP
+The ACCEL-PPP is completly new implementation of PPTP/PPPoE/L2TP which
+was written from scratch. Userspace daemon has its own PPP
 implementation, so it does not uses pppd and one process
 (multi-threaded) manages all connections. ACCEL-PPP uses only
 kernel-mode implementations of pptp/l2tp/pppoe.
@@ -50,7 +50,7 @@ cd build
 %{cmake} \
 	  -DSHAPER=TRUE \
 	  -DRADIUS=TRUE \
-          -DNETSNMP=TRUE \
+		  -DNETSNMP=TRUE \
 	  -DLOG_PGSQL=FALSE \
 	  ../
 %{__make}
@@ -74,9 +74,10 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING README
 %{_sysconfdir}/accel-ppp.conf.dist
 %attr(755,root,root) %{_sbindir}/accel-pppd
-/usr/lib/accel-ppp
+%{_prefix}/lib/accel-ppp
 %dir /var/run/%{name}
 /var/run/%{name}/seq
 %{systemdtmpfilesdir}/%{name}.conf
 %{_datadir}/accel-ppp/
 %{_mandir}/man5/accel-ppp.conf.5*
+%dir /var/log/accel-ppp
