@@ -1,0 +1,13 @@
+diff -ur accel-ppp-1.6.1/accel-pppd/CMakeLists.txt accel-ppp-1.6.1.new/accel-pppd/CMakeLists.txt
+--- accel-ppp-1.6.1/accel-pppd/CMakeLists.txt	2012-03-20 06:43:40.000000000 +0100
++++ accel-ppp-1.6.1.new/accel-pppd/CMakeLists.txt	2012-04-16 15:36:28.481228047 +0200
+@@ -91,8 +91,5 @@
+ IF (NOT DEFINED CPACK_TYPE)
+ 	INSTALL(FILES accel-ppp.conf DESTINATION /etc RENAME accel-ppp.conf.dist)
+ 
+-	INSTALL(CODE "EXECUTE_PROCESS(COMMAND mkdir -p /var/log/accel-ppp)")
+-	INSTALL(CODE "EXECUTE_PROCESS(COMMAND mkdir -p /var/run/accel-ppp)")
+-	INSTALL(CODE "EXECUTE_PROCESS(COMMAND 'echo 0 > /var/run/accel-ppp/seq')")
+ ENDIF (NOT DEFINED CPACK_TYPE)
+ 
+Tylko w accel-ppp-1.6.1.new/accel-pppd: CMakeLists.txt~
