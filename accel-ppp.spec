@@ -64,7 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d} $RPM_BUILD_ROOT%{systemdtmpfilesdir}
 install -d $RPM_BUILD_ROOT/var/{log/accel-ppp,run/accel-ppp}
 install %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/accel-pppd
 echo "0" > $RPM_BUILD_ROOT/var/run/accel-ppp/seq
 
 
@@ -78,7 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/accel-ppp.conf.dist
 %attr(755,root,root) %{_sbindir}/accel-pppd
 %attr(755,root,root) %{_prefix}/lib/accel-ppp
-%attr(754,root,root) /etc/rc.d/init.d/
+%attr(754,root,root) /etc/rc.d/init.d/accel-pppd
 %dir /var/run/%{name}
 /var/run/%{name}/seq
 %{systemdtmpfilesdir}/%{name}.conf
