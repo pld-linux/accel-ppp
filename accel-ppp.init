@@ -160,8 +160,6 @@ case "$1" in
 	;;
   status)
 	status accel-ppp
-	status --pidfile $pidfile accel-ppp
-	status --pidfile $pidfile accel-ppp accel-pppd
 	RETVAL=$?
 	;;
   *)
