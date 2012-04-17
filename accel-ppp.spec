@@ -51,7 +51,9 @@ cd build
 %{cmake} \
 	  -DSHAPER=TRUE \
 	  -DRADIUS=TRUE \
-		  -DNETSNMP=TRUE \
+	  -DNETSNMP=TRUE \
+	  -DCMAKE_INSTALL_PREFIX=%{_prefix} \
+	  -DBUILD_INSTALL_PREFIX=$RPM_BUILD_ROOT \
 	  -DLOG_PGSQL=FALSE \
 	  ../
 %{__make}
@@ -61,10 +63,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install/fast \
 	  DESTDIR=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT/etc/{sysconfig,rc.d/init.d} $RPM_BUILD_ROOT%{systemdtmpfilesdir}
-install -d $RPM_BUILD_ROOT/var/{log/accel-ppp,run/accel-ppp}
+install -d $RPM_BUILD_ROOT/etc/{sysconfig,logrotate.d,rc.d/init.d} $RPM_BUILD_ROOT%{systemdtmpfilesdir}
 install %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/accel-pppd
+install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 echo "0" > $RPM_BUILD_ROOT/var/run/accel-ppp/seq
 
 
@@ -76,6 +78,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc COPYING README
 %dir %{_sysconfdir}
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/accel-ppp.conf.dist
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/%{name}
 %attr(755,root,root) %{_sbindir}/accel-pppd
 %attr(755,root,root) %{_prefix}/lib/accel-ppp
 %attr(754,root,root) /etc/rc.d/init.d/accel-pppd
