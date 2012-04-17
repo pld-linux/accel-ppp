@@ -39,6 +39,10 @@ start() {
 		return
 	fi
 
+	if [ ! -f /var/run/accel-ppp/seq ]; then
+		echo "0" > /var/run/accel-ppp/seq
+	fi
+
 	msg_starting "accel-pppd"
 	daemon /usr/sbin/accel-pppd $OPTIONS
 	RETVAL=$?
