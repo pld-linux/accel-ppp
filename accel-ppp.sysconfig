@@ -1,0 +1,2 @@
+# Options for accel-ppp
+OPTIONS="-d -c /etc/accel-ppp.conf -p /var/run/accel-ppp/accel-ppp.pid"
