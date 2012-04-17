@@ -10,6 +10,19 @@ diff -ur accel-ppp-1.6.1/accel-pppd/auth/CMakeLists.txt accel-ppp-1.6.1.new/acce
  )
  
 Tylko w accel-ppp-1.6.1.new/accel-pppd/auth: CMakeLists.txt~
+diff -ur accel-ppp-1.6.1/accel-pppd/CMakeLists.txt accel-ppp-1.6.1.new/accel-pppd/CMakeLists.txt
+--- accel-ppp-1.6.1/accel-pppd/CMakeLists.txt	2012-03-20 06:43:40.000000000 +0100
++++ accel-ppp-1.6.1.new/accel-pppd/CMakeLists.txt	2012-04-17 15:44:24.036866845 +0200
+@@ -80,7 +80,7 @@
+ set_property(TARGET accel-pppd PROPERTY CMAKE_SKIP_BUILD_RPATH FALSE)
+ set_property(TARGET accel-pppd PROPERTY CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+ set_property(TARGET accel-pppd PROPERTY INSTALL_RPATH_USE_LINK_PATH FALSE)
+-set_property(TARGET accel-pppd PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib/accel-ppp)
++set_property(TARGET accel-pppd PROPERTY INSTALL_RPATH ${CMAKE_INSTALL_PREFIX}/lib64/accel-ppp)
+ 
+ INSTALL(TARGETS accel-pppd
+ 	RUNTIME DESTINATION sbin
+Tylko w accel-ppp-1.6.1.new/accel-pppd: CMakeLists.txt~
 diff -ur accel-ppp-1.6.1/accel-pppd/ctrl/l2tp/CMakeLists.txt accel-ppp-1.6.1.new/accel-pppd/ctrl/l2tp/CMakeLists.txt
 --- accel-ppp-1.6.1/accel-pppd/ctrl/l2tp/CMakeLists.txt	2012-03-20 06:43:40.000000000 +0100
 +++ accel-ppp-1.6.1.new/accel-pppd/ctrl/l2tp/CMakeLists.txt	2012-04-17 15:08:47.786295511 +0200
