@@ -8,8 +8,9 @@
 #
 # processname:	accel-pppd
 # config:	/etc/accel-ppp.conf
-# pidfile:	/var/run/accel-ppp/accel-ppp.pid	
+# pidfile:	/var/run/accel-ppp/accel-ppp.pid
 #
+# $Id$
 #
 # Source function library
 . /etc/rc.d/init.d/functions
@@ -57,7 +58,6 @@ stop() {
 
 	# Stop daemons.
 	msg_stopping "accel-pppd"
-	killproc accel-pppd
 	killproc --pidfile $pidfile accel-pppd -TERM
 	rm -f /var/lock/subsys/accel-ppp
 }
@@ -70,7 +70,6 @@ reload() {
 	fi
 
 	msg_reloading "accel-pppd"
-	killproc accel-pppd -HUP
 	killproc --pidfile $pidfile accel-pppd -HUP
 	RETVAL=$?
 }
@@ -102,11 +101,13 @@ case "$1" in
   try-restart)
 	condrestart 0
 	;;
+# XXX: duplicate force-reload, remove one depending whether it supports reload or not
 # include force-reload here if program allows reloading without restart
 # otherwise remove reload action and support force-reload as restart if running
   reload|force-reload)
 	reload
 	;;
+# XXX: duplicate force-reload, remove one depending whether it supports reload or not
 # use this one if program doesn't support reloading without restart
   force-reload)
 	condrestart 7

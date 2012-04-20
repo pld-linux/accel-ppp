@@ -2,6 +2,7 @@
 # - check accel-ppp.tmpfiles
 # - logrotate archivedir
 # - add bconds
+# - initscript: remove duplicate force-reload, remove one depending whether it supports reload or not
 #
 Summary:	High performance PPTP/L2TP/PPPoE server
 Name:		accel-ppp
