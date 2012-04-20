@@ -1,7 +1,6 @@
-#
 # TODO:
-#
 # - check accel-ppp.tmpfiles
+# - logrotate archivedir
 # - add bconds
 #
 Summary:	High performance PPTP/L2TP/PPPoE server
@@ -23,6 +22,8 @@ BuildRequires:	libnl1-devel
 BuildRequires:	net-snmp-devel >= 5.0
 BuildRequires:	openssl-devel
 BuildRequires:	pcre-devel
+BuildRequires:	rpmbuild(macros) >= 1.600
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 The ACCEL-PPP is completly new implementation of PPTP/PPPoE/L2TP which
@@ -41,7 +42,6 @@ Features:
 - SNMP
 - IPv6 (including builtin Neighbor Discovery and DHCPv6)
 
-
 %prep
 %setup -q
 %patch0 -p1
@@ -52,13 +52,13 @@ Features:
 %build
 install -d build
 cd build
-%{cmake} \
-	  -DSHAPER=TRUE \
-	  -DRADIUS=TRUE \
-	  -DNETSNMP=TRUE \
-	  -DBUILD_INSTALL_PREFIX=$RPM_BUILD_ROOT \
-	  -DLOG_PGSQL=FALSE \
-	  ../
+%cmake \
+	-DSHAPER=TRUE \
+	-DRADIUS=TRUE \
+	-DNETSNMP=TRUE \
+	-DBUILD_INSTALL_PREFIX=$RPM_BUILD_ROOT \
+	-DLOG_PGSQL=FALSE \
+	..
 %{__make}
 
 %install
@@ -67,18 +67,17 @@ rm -rf $RPM_BUILD_ROOT
 	  DESTDIR=$RPM_BUILD_ROOT
 
 install -d $RPM_BUILD_ROOT/etc/{sysconfig,logrotate.d,rc.d/init.d} $RPM_BUILD_ROOT%{systemdtmpfilesdir}
-install %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
-install %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/accel-pppd
-install %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+cp -p %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
+install -p %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/accel-pppd
+cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
 echo "0" > $RPM_BUILD_ROOT/var/run/accel-ppp/seq
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc COPYING README
+%doc README
 %dir %{_sysconfdir}
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/accel-ppp.conf.dist
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/%{name}
@@ -86,8 +85,9 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/accel-ppp
 %attr(754,root,root) /etc/rc.d/init.d/accel-pppd
 %dir /var/run/%{name}
+# XXX do you really want to overwrite this?
 /var/run/%{name}/seq
 %{systemdtmpfilesdir}/%{name}.conf
-%{_datadir}/accel-ppp/
+%{_datadir}/%{name}
 %{_mandir}/man5/accel-ppp.conf.5*
 %dir /var/log/accel-ppp
