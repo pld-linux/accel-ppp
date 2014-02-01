@@ -6,13 +6,13 @@
 #
 Summary:	High performance PPTP/L2TP/PPPoE server
 Name:		accel-ppp
-Version:	1.6.1
+Version:	1.7.3
 Release:	0.1
 License:	GPL v2+
 Group:		Networking
 URL:		http://sourceforge.net/projects/accel-ppp/
 Source0:	http://downloads.sourceforge.net/accel-ppp/%{name}-%{version}.tar.bz2
-# Source0-md5:	8985ab9f743b952396f6dc53d6fd56a8
+# Source0-md5:	bf03f20d9df9a0694e5cd0be9b57d1b6
 Source1:	%{name}.tmpfiles
 Source2:	%{name}.init
 Source3:	%{name}.logrotate
