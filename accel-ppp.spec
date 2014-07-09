@@ -6,18 +6,16 @@
 #
 Summary:	High performance PPTP/L2TP/PPPoE server
 Name:		accel-ppp
-Version:	1.7.3
-Release:	0.1
+Version:	1.8.0
+Release:	1
 License:	GPL v2+
 Group:		Networking
-URL:		http://sourceforge.net/projects/accel-ppp/
+URL:		http://sourceforge.net/projects/accel-ppp
 Source0:	http://downloads.sourceforge.net/accel-ppp/%{name}-%{version}.tar.bz2
-# Source0-md5:	bf03f20d9df9a0694e5cd0be9b57d1b6
+# Source0-md5:	bc3a02b24fb9f304f7417a9011a494d6
 Source1:	%{name}.tmpfiles
 Source2:	%{name}.init
 Source3:	%{name}.logrotate
-Patch0:		%{name}-cmake.patch
-Patch1:		%{name}-cmake-lib64.patch
 BuildRequires:	cmake >= 2.6
 BuildRequires:	libnl1-devel
 BuildRequires:	net-snmp-devel >= 5.0
@@ -45,10 +43,6 @@ Features:
 
 %prep
 %setup -q
-%patch0 -p1
-%ifarch %{x8664}
-%patch1 -p1
-%endif
 
 %build
 install -d build
@@ -71,7 +65,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,logrotate.d,rc.d/init.d} $RPM_BUILD_RO
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 install -p %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/accel-pppd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
-echo "0" > $RPM_BUILD_ROOT/var/run/accel-ppp/seq
+install -d $RPM_BUILD_ROOT/var/log/accel-ppp
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -82,13 +76,13 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/accel-ppp.conf.dist
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/%{name}
+%attr(755,root,root) %{_bindir}/accel-cmd
 %attr(755,root,root) %{_sbindir}/accel-pppd
 %attr(755,root,root) %{_libdir}/accel-ppp
 %attr(754,root,root) /etc/rc.d/init.d/accel-pppd
 %dir /var/run/%{name}
-# XXX do you really want to overwrite this?
-/var/run/%{name}/seq
 %{systemdtmpfilesdir}/%{name}.conf
 %{_datadir}/%{name}
+%{_mandir}/man1/accel-cmd.*
 %{_mandir}/man5/accel-ppp.conf.5*
 %dir /var/log/accel-ppp
