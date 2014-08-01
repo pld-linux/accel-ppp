@@ -37,10 +37,11 @@ Features:
 - PPPoE server
 - L2TPv2 server
 - Radius CoA/DM(PoD)
-- Built-in shaper (tbf)
-- Command line interface (telnet)
+- Built-in shaper
+- Command line interface
 - SNMP
 - IPv6 (including builtin Neighbor Discovery and DHCPv6)
+- IPoE (start session by DHCPv4 or unclassified IPv4 packet)
 
 %prep
 %setup -q
