@@ -16,6 +16,7 @@ Source0:	http://downloads.sourceforge.net/accel-ppp/%{name}-%{version}.tar.bz2
 Source1:	%{name}.tmpfiles
 Source2:	%{name}.init
 Source3:	%{name}.logrotate
+Source4:	%{name}.sysconfig
 BuildRequires:	cmake >= 2.6
 BuildRequires:	libnl1-devel
 BuildRequires:	net-snmp-devel >= 5.0
@@ -65,6 +66,7 @@ install -d $RPM_BUILD_ROOT/etc/{sysconfig,logrotate.d,rc.d/init.d} $RPM_BUILD_RO
 cp -p %{SOURCE1} $RPM_BUILD_ROOT%{systemdtmpfilesdir}/%{name}.conf
 install -p %{SOURCE2} $RPM_BUILD_ROOT/etc/rc.d/init.d/accel-pppd
 cp -p %{SOURCE3} $RPM_BUILD_ROOT/etc/logrotate.d/%{name}
+install -p %{SOURCE4} $RPM_BUILD_ROOT/etc/sysconfig/accel-ppp
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -75,6 +77,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) /etc/accel-ppp.conf.dist
 %attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) /etc/logrotate.d/%{name}
+%attr(640,root,http) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %attr(755,root,root) %{_bindir}/accel-cmd
 %attr(755,root,root) %{_sbindir}/accel-pppd
 %attr(755,root,root) %{_libdir}/accel-ppp
