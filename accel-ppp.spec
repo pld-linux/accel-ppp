@@ -8,7 +8,7 @@ Summary:	High performance PPTP/PPPoE/L2TP/SSTP server
 Summary(pl.UTF-8):	Wydajny serwer PPTP/PPPoE/L2TP/SSTP
 Name:		accel-ppp
 Version:	1.13.0
-Release:	1
+Release:	2
 License:	GPL v2+
 Group:		Networking
 #Source0Download: https://github.com/accel-ppp/accel-ppp/releases
