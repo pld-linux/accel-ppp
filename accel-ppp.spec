@@ -7,23 +7,22 @@
 Summary:	High performance PPTP/PPPoE/L2TP/SSTP server
 Summary(pl.UTF-8):	Wydajny serwer PPTP/PPPoE/L2TP/SSTP
 Name:		accel-ppp
-Version:	1.13.0
-Release:	2
+Version:	1.14.0
+Release:	1
 License:	GPL v2+
 Group:		Networking
 #Source0Download: https://github.com/accel-ppp/accel-ppp/releases
 Source0:	https://github.com/accel-ppp/accel-ppp/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	239f03b9e3b81d6a156950dd3e983b28
+# Source0-md5:	c8cbda7b01965bfee393c096fa3cf413
 Source1:	%{name}.tmpfiles
 Source2:	%{name}.init
 Source3:	%{name}.logrotate
 Source4:	%{name}.sysconfig
-Patch0:		%{name}-snmp.patch
 URL:		https://accel-ppp.org/
-BuildRequires:	cmake >= 2.6
+BuildRequires:	cmake >= 3.10
 BuildRequires:	net-snmp-devel >= 5.0
 BuildRequires:	openssl-devel >= 0.9.8
-BuildRequires:	pcre-devel
+BuildRequires:	pcre2-8-devel
 BuildRequires:	rpmbuild(macros) >= 1.605
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -69,7 +68,6 @@ Możliwości:
 
 %prep
 %setup -q
-%patch -P0 -p1
 
 %build
 install -d build
